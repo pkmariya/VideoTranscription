@@ -1,0 +1,159 @@
+1
+00:00:00,000 --> 00:00:04,080
+Turn these 10 concepts in 2 minutes and you will understand the foundation of every modern
+
+2
+00:00:04,080 --> 00:00:08,400
+LLM. The same foundation behind chargeability and 300 billion AI industry.
+
+3
+00:00:08,400 --> 00:00:12,880
+Number 1. Tokenization. An LLM does not read full sentences like humans. It breaks it down into
+
+4
+00:00:12,880 --> 00:00:18,320
+small units called tokens. Token's can be words, part of words, numbers, space and punctuation.
+
+5
+00:00:18,320 --> 00:00:23,520
+So your prompt first becomes a sequence of tokens. Number 2. Embeddings. Each token is converted
+
+6
+00:00:23,520 --> 00:00:28,400
+into vectors. A vector is just a list of numbers. Think of embeddings as coordinates in a meaning
+
+7
+00:00:28,400 --> 00:00:33,280
+space. Similar meanings end up closer together in the vector space. Number 3. Positional
+
+8
+00:00:33,280 --> 00:00:38,320
+encoding. The model also needs to know the order of tokens because dog bites man and man bites
+
+9
+00:00:38,320 --> 00:00:42,320
+dog have same tokens effectively different meaning. So positional encoding adds positional
+
+10
+00:00:42,320 --> 00:00:46,160
+information. Basically it tells this is token 1, this is token 2, this game before that.
+
+11
+00:00:46,160 --> 00:00:50,640
+Modern models often use methods like rope or rotatory positional embeddings to handle this.
+
+12
+00:00:51,600 --> 00:00:56,080
+Fourth. The transformer block. Now these vectors are entered into transformer. A transformer is a
+
+13
+00:00:56,080 --> 00:00:59,920
+stack of repeated processing layers. Each layer refines the representation of the text. Number 5.
+
+14
+00:00:59,920 --> 00:01:04,239
+The self-attention mechanism. Self-attention decides which token should influence each other.
+
+15
+00:01:04,239 --> 00:01:07,680
+It helps the model connect instructions, context, grammar and relationships.
+
+16
+00:01:08,320 --> 00:01:12,720
+Technically attention uses queries, keys and values. Query means what I am looking for. The key
+
+17
+00:01:12,720 --> 00:01:17,040
+means what information exists and the value means what information should I use. Number 6. Feed
+
+18
+00:01:17,040 --> 00:01:20,400
+forward network. After the attention the data goes through several neural networks inside the
+
+19
+00:01:20,400 --> 00:01:24,400
+transformer block. This is where the model transforms the patterns, meanings and relationships into
+
+20
+00:01:24,400 --> 00:01:29,520
+richer representations. Number 7. Logits. At the end the model produces raw score scored
+
+21
+00:01:29,520 --> 00:01:34,000
+logits. Each logic is a score for a possible next token. For example, Palacemeix score higher,
+
+22
+00:01:34,000 --> 00:01:39,120
+Londonmeix score lower and Banana Avery low score. Number 8. Softmax. Softmax converts logic
+
+23
+00:01:39,120 --> 00:01:43,200
+into probabilities. Think of it as a score to percentage converter. It makes all possible
+
+24
+00:01:43,200 --> 00:01:48,080
+next tokens probabilities adding up to 100%. So Palace might be 92% London 7% and Banana 1%.
+
+25
+00:01:48,080 --> 00:01:52,000
+Number 9. Stampling. The model then selects the next token. Sometimes it picks the higher
+
+26
+00:01:52,800 --> 00:01:54,960
+probability token. Sometimes it samples from the probability distribution using setting
+
+27
+00:01:54,960 --> 00:01:58,720
+stack temperature or top P. That's why same prompt can produce slightly different answers
+
+28
+00:01:58,720 --> 00:02:03,120
+in the locations. Number 10. Training versus inference. Training is when modelers.
+
+29
+00:02:03,120 --> 00:02:06,560
+It predicts tokens, calculates error using a loss function and updates its weights using a
+
+30
+00:02:06,560 --> 00:02:10,720
+back propagation or a gradient descent. Inference, on other hand, is when you use a trained model.
+
+31
+00:02:10,720 --> 00:02:14,400
+The weights are frozen. Your prompt becomes a temporary context. The model generates the output
+
+32
+00:02:14,400 --> 00:02:18,480
+one token at a time based on your prompt. So the full pipeline is Texas converted to tokens and
+
+33
+00:02:18,480 --> 00:02:22,560
+embeddings. And then they are positionally encoded, which goes through a transformer block,
+
+34
+00:02:22,560 --> 00:02:26,880
+where self-attention mechanism finds the important weights converted to logics, goes through a soft
+
+35
+00:02:26,880 --> 00:02:31,280
+MAC function and sampling happens to generate the next token. That loop repeats again and again
+
+36
+00:02:31,280 --> 00:02:36,160
+until the answer is complete. An LLM isn't magic. It's a transformer repeatedly predicting the
+
+37
+00:02:36,160 --> 00:02:40,080
+next token billions of times over massive amounts of data. Once you understand this pipeline,
+
+38
+00:02:40,080 --> 00:02:43,920
+every advanced AI concept starts to click. Comment LLM and I'll share some resources to get you.
+
+39
+00:02:43,920 --> 00:02:47,280
+Go deeper. Save this video before it disappears on a timeline. Share this post with your friends
+
+40
+00:02:47,280 --> 00:02:57,280
+and colleagues and follow me for more such AI concepts, explain simply.
