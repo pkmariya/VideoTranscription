@@ -1,9 +1,9 @@
 
 """
-Video Transcriber — a Gradio app.
+Video Transcriber — a Gradio app using faster-whisper.
 
 Paste a video link (YouTube or most other sites), the app downloads the
-audio with yt-dlp, transcribes it locally with OpenAI Whisper, and shows
+audio with yt-dlp, transcribes it locally with faster-whisper, and shows
 the transcript. You can also download the result as .txt or .srt.
 
 Run:  python app.py
@@ -15,18 +15,18 @@ import tempfile
 import datetime as _dt
 
 import gradio as gr
-import whisper
+from faster_whisper import WhisperModel
 import yt_dlp
 
 # Whisper models are loaded lazily and cached so we don't reload per request.
 _MODEL_CACHE = {}
 
-MODEL_CHOICES = ["tiny", "base", "small", "medium", "large"]
+MODEL_CHOICES = ["tiny", "base", "small", "medium", "large-v2", "large-v3"]
 
 
 def _load_model(name: str):
     if name not in _MODEL_CACHE:
-        _MODEL_CACHE[name] = whisper.load_model(name)
+        _MODEL_CACHE[name] = WhisperModel(name, device="cpu", compute_type="int8")
     return _MODEL_CACHE[name]
 
 
@@ -68,32 +68,30 @@ def _format_timestamp(seconds: float) -> str:
 def _to_srt(segments) -> str:
     lines = []
     for i, seg in enumerate(segments, start=1):
-        start = _format_timestamp(seg["start"])
-        end = _format_timestamp(seg["end"])
-        text = seg["text"].strip()
+        start = _format_timestamp(seg.start)
+        end = _format_timestamp(seg.end)
+        text = seg.text.strip()
         lines.append(f"{i}\n{start} --> {end}\n{text}\n")
     return "\n".join(lines)
 
 
 def _format_as_bullets(segments) -> str:
-    """Format transcript segments as bullet points with timestamps."""
+    """Format transcript segments as bullet points without timestamps."""
     lines = []
     for seg in segments:
-        text = seg["text"].strip()
+        text = seg.text.strip()
         if text:  # Only add non-empty segments
-            start = _format_timestamp(seg["start"])
-            lines.append(f"• [{start}] {text}")
+            lines.append(f"• {text}")
     return "\n".join(lines)
 
 
 def _format_as_html_bullets(segments) -> str:
-    """Format transcript segments as HTML bullet points for display."""
+    """Format transcript segments as HTML bullet points for display (no timestamps)."""
     lines = ["<ul style='line-height: 1.8; font-size: 16px;'>"]
     for seg in segments:
-        text = seg["text"].strip()
+        text = seg.text.strip()
         if text:  # Only add non-empty segments
-            start = _format_timestamp(seg["start"])
-            lines.append(f"  <li><strong>[{start}]</strong> {text}</li>")
+            lines.append(f"  <li>{text}</li>")
     lines.append("</ul>")
     return "\n".join(lines)
 
@@ -117,11 +115,10 @@ def transcribe(url: str, model_name: str, progress=gr.Progress()):
 
     progress(0.6, desc="Transcribing (this can take a while)…")
     try:
-        result = model.transcribe(audio_path)
+        segments, info = model.transcribe(audio_path, language="en")
+        segments = list(segments)  # Convert generator to list
     except Exception as e:
         raise gr.Error(f"Transcription failed: {e}")
-
-    segments = result.get("segments", [])
 
     # Format transcript as bullet points
     bullet_text = _format_as_bullets(segments)
@@ -144,7 +141,7 @@ with gr.Blocks(title="Video Transcriber") as demo:
     gr.Markdown(
         "# 🎬 Video Transcriber\n"
         "Paste a video link (YouTube or most other sites). The app downloads "
-        "the audio, transcribes it locally with Whisper, and shows the text as formatted bullet points."
+        "the audio, transcribes it locally with faster-whisper, and shows the text as formatted bullet points."
     )
 
     with gr.Row():
