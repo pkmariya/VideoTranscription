@@ -31,6 +31,15 @@ python app.py
 Open the URL it prints (default http://127.0.0.1:7860), paste a link, pick a
 model, and click **Transcribe**.
 
+## Docker
+
+```bash
+docker build -t video-transcriber .
+docker run --rm -p 8080:8080 video-transcriber
+```
+
+Then open http://localhost:8080 in your browser.
+
 ## Notes
 
 - **Model size** trades speed for accuracy: `tiny`/`base` are fast, `small`/
